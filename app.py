@@ -2,26 +2,45 @@ import streamlit as st
 import pandas as pd
 import requests
 
-# Function to fetch data from the API with debugging
-def fetch_data():
+# Function to refresh the access token
+def refresh_access_token():
+    url = 'https://hydra.prod.learnapp.com/auth/refresh'
+    headers = {
+        'accept': '*/*',
+        'content-type': 'application/json',
+        'x-api-key': 'u36jbrsUjD8v5hx2zHdZNwqGA6Kz7gsm'
+    }
+    payload = '{"grantType":"refresh_token"}'
+    
+    response = requests.post(url, headers=headers, data=payload)
+    
+    if response.status_code == 200:
+        token_data = response.json()
+        return token_data['accessToken'], token_data['refreshToken']
+    else:
+        print(f"Failed to refresh token: {response.status_code} - {response.text}")
+        return None, None
+
+# Function to fetch data from the API
+def fetch_data(access_token):
     url = 'https://catalog.prod.learnapp.com/catalog/discover?type=courses'
     headers = {
         'accept': '*/*',
-        'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3Mjc1ODI3MjgsImV4cCI6MTcyODE4NzUyOCwiYXVkIjoibGVhcm5hcHAiLCJpc3MiOiJoeWRyYTowLjAuMSJ9.0qOdLOLcH_N4GrmOhSyRB82QNW5eizBX5G4-MkHEd3Q',
+        'authorization': f'Bearer {access_token}',
         'x-api-key': 'ZmtFWfKS9aXK3NZQ2dY8Fbd6KqjF8PDu'
     }
 
     try:
         response = requests.get(url, headers=headers)
-        
+
         # Debugging: Check status code and raw response
-       # st.write(f"Response Status Code: {response.status_code}")
+        # st.write(f"Response Status Code: {response.status_code}")
         
         if response.status_code == 200:
             try:
                 # Parse the response to JSON
                 data = response.json()
-                #st.write("Raw Data from API (limited to 1000 characters):", str(data)[:1000])
+                # st.write("Raw Data from API (limited to 1000 characters):", str(data)[:1000])
                 return data
             except ValueError as e:
                 st.error(f"Failed to parse response as JSON: {e}")
@@ -151,7 +170,9 @@ st.title("Course Catalog")
 
 # Button to fetch data
 if st.button("Fetch Courses"):
-    data = fetch_data()
+    # Replace with a valid access token for testing
+    access_token = "your_access_token"
+    data = fetch_data(access_token)
     
     if data:
         # Convert JSON data to DataFrame
