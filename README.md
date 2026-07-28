@@ -1,6 +1,21 @@
-# la-data-publlic
+# LearnApp Public Data Viewer
 
+**Created:** 2024-09-29
 
-Applink - https://la-data-public.streamlit.app/
+## Problem
+LearnApp catalog/course data was hard to browse outside internal tools.
 
-db_link - https://docs.google.com/spreadsheets/d/1m5BnyN1RK1z85Cq7reU6UYqE-fs9N0jNjYHSxnkIpSU/edit?usp=sharing
+## Solution
+A Streamlit app that fetches catalog data and presents it with a Google Sheet link for reference.
+
+## Outcome
+A public-friendly view of LearnApp course data for exploration and analysis.
+
+## Links
+- GitHub: https://github.com/Vaibhavsoni02/la-data-public
+- Project page: https://vaibhav.pocpe.com/la-data-public/
+- Live demo: https://la-data-public.streamlit.app/
+
+---
+
+_Part of the Vaibhav Soni project archive (oldest → newest)._
